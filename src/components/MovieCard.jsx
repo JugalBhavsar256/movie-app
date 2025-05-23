@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import '../css/MovieCard.css'
 import { getGenres } from '../services/api'
 import { useMovieContext } from '../context/MovieContext'
+import { Link } from 'react-router-dom'
 
 function MovieCard({movie}) {
     const {isFavorite, addToFavorites, removeFromFavorites} = useMovieContext()
@@ -29,7 +30,7 @@ function MovieCard({movie}) {
   }, [movie.id])
 
   return (
-    <div className="movie-card">
+    <Link to={`/movie/${movie.id}`} className="movie-card">
         <div className="movie-poster">
             <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title}/>
             <div className="movie-overlay">
@@ -43,7 +44,7 @@ function MovieCard({movie}) {
             <p>{movie.release_date?.split("-")[0]}</p>
             <p>{genreNames.join(', ')}</p>
         </div>
-    </div>
+    </Link>
   )
 }
 

@@ -20,3 +20,12 @@ export const getGenres = async (movie_id) => {
   console.log(data)
   return data.genres
 }
+<<<<<<< HEAD
+=======
+
+export const movieDetails = async (id) => {
+  const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`)
+  const data = await response.json()
+  return data
+}
+>>>>>>> 54bae77 (added to the api file to get all the data and wrapped moviecard in link so that they are now clickable)
