@@ -1,7 +1,7 @@
 import React from 'react'
 import MovieCard from '../components/MovieCard'
 import { useState, useEffect } from 'react'
-import { searchMovies, getPopularMovies } from '../services/api'
+import { searchMovies, getPopularMovies, getGenres } from '../services/api'
 import '../css/Home.css'
 
 function Home() {
@@ -42,6 +42,8 @@ function Home() {
             setLoading(false)
         }
     };
+
+
   return (
     <div className="home">
         <form  onSubmit={handleSearch} className="search-form">
