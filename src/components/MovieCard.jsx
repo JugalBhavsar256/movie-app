@@ -18,15 +18,15 @@ function MovieCard({movie}) {
     useEffect(() => {
         const loadGenre = async () => {
         try {
-            const genres = await getGenres(movie.id);
-            const names = genres.map((genre) => genre.name);
-            setGenreNames(names); 
+            const genres = await getGenres(movie.id)
+            const names = genres.map((genre) => genre.name)
+            setGenreNames(names) 
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-    };
-    loadGenre();
-  }, [movie.id]);
+    }
+    loadGenre()
+  }, [movie.id])
 
   return (
     <div className="movie-card">
