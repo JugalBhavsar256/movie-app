@@ -26,3 +26,5 @@ export const movieDetails = async (movie_id) => {
   const data = await response.json()
   return data
 }
+
+
