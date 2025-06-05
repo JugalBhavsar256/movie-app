@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { searchMovies, getPopularMovies, getGenres } from '../services/api'
 import '../css/Home.css'
 
-function Home() {
+function Home({currentGenre}) {
     const [searchQuery, setSearchQuery] = useState("")
      const [currentQuery, setCurrentQuery] = useState(null)
     const [movies, setMovies] = useState([])
@@ -15,7 +15,7 @@ function Home() {
 
     useEffect(() => {
         loadPopularMovies(1, null)
-    }, [])
+    }, [currentGenre])
 
    
     const loadPopularMovies = async (pageToLoad, query = null) => {
@@ -24,17 +24,24 @@ function Home() {
             const { movies: newMovies, totalPages } = query
                 ? await searchMovies(query, pageToLoad)
                 : await getPopularMovies(pageToLoad)
+            
+            let filteredMovies = newMovies
+            if(currentGenre !== "all"){
+                filteredMovies = newMovies.filter(movie => 
+                    movie.genre_ids && movie.genre_ids.includes(parseInt(currentGenre))
+                )
+            }
 
             if (pageToLoad === 1) {
-                setMovies(newMovies)
+                setMovies(filteredMovies)
             } else {
-                setMovies((prev) => [...prev, ...newMovies])
+                setMovies((prev) => [...prev, ...filteredMovies])
             }
 
             setPage(pageToLoad)
             setTotalPages(totalPages)
             setError(null)
-             setCurrentQuery(query)
+            setCurrentQuery(query)
         } catch (err) {
             console.log(err)
             setError('Failed to load movies...')
@@ -50,7 +57,7 @@ function Home() {
         setMovies([])    
         setPage(1)        
         loadPopularMovies(1, trimmedQuery)
-    };
+    }
     
     const loadMoreMovies = () => {
         if (page < totalPages && !loading) {

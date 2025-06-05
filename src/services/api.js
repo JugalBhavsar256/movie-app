@@ -16,7 +16,7 @@ export const searchMovies = async (query, page = 1) => {
 }
 
 export const getGenres = async (movie_id) => {
-  const response =await fetch(`${BASE_URL}/movie/${movie_id}?api_key=${API_KEY}`);
+  const response =await fetch(`${BASE_URL}/movie/${movie_id}?api_key=${API_KEY}`)
   const data = await response.json()
   console.log(data)
   return data.genres
@@ -26,4 +26,10 @@ export const movieDetails = async (movie_id) => {
   const response = await fetch(`${BASE_URL}/movie/${movie_id}?api_key=${API_KEY}`)
   const data = await response.json()
   return data
+}
+
+export const getListOfGenres = async () => {
+  const response = await fetch (`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`)
+  const data = await response.json()
+  return data.genres
 }
