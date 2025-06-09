@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react'
 import { searchMovies, getPopularMovies, getGenres } from '../services/api'
 import '../css/Home.css'
 
-function Home({currentGenre}) {
-    const [searchQuery, setSearchQuery] = useState("")
-     const [currentQuery, setCurrentQuery] = useState(null)
+function Home({currentGenre, searchQuery}) {
+    const [currentQuery, setCurrentQuery] = useState(null)
     const [movies, setMovies] = useState([])
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -14,8 +13,10 @@ function Home({currentGenre}) {
     const [totalPages, setTotalPages] = useState(null)
 
     useEffect(() => {
-        loadPopularMovies(1, null)
-    }, [currentGenre])
+        setMovies([])
+        setPage(1)
+        loadPopularMovies(1, searchQuery)
+    }, [currentGenre, searchQuery])
 
    
     const loadPopularMovies = async (pageToLoad, query = null) => {
@@ -49,35 +50,15 @@ function Home({currentGenre}) {
             setLoading(false)
         }
     }
-
-     const handleSearch = async (e) => {
-        e.preventDefault()
-        const trimmedQuery = searchQuery.trim()
-        if (!trimmedQuery) return
-        setMovies([])    
-        setPage(1)        
-        loadPopularMovies(1, trimmedQuery)
-    }
     
     const loadMoreMovies = () => {
         if (page < totalPages && !loading) {
             loadPopularMovies(page + 1, currentQuery)
         }
     }
-    console.log(movies.length)
 
   return (
     <div className="home">
-        <form  onSubmit={handleSearch} className="search-form">
-            <input 
-            type="text" 
-            placeholder="Search for movies..." 
-            className="search-input"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type ="submit" className="search-button">Search</button>
-        </form>
 
         {error && <div className="error-message">{error}</div>}
         {movies.length === 0 && !loading && <div>No movies found!!!!!!!</div>}

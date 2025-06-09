@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import { getListOfGenres } from '../services/api'
 import '../css/Navbar.css'
 
-function NavBar({ onGenreSelect }) {
+function NavBar({ onGenreSelect, onSearch }) {
   const [genreBox, setGenreBox] = useState(false)
   const [genre, setGenre] = useState([])
+  const [searchQuery, setSearchQuery] = useState("")
+
 
   useEffect(()=> {
     const getGenres = async () => {
@@ -21,6 +23,13 @@ function NavBar({ onGenreSelect }) {
     getGenres()
   }, [])
 
+  const handleSearch = (e) => {
+    e.preventDefault()
+    const trimmedQuery = searchQuery.trim()
+    if (!trimmedQuery) return
+    onSearch(trimmedQuery)
+  }
+
   const handleGenreClick = (genreId) => {
         onGenreSelect(genreId)
         setGenreBox(false)
@@ -34,6 +43,16 @@ function NavBar({ onGenreSelect }) {
         <div className='navabar-links'>
           <Link to ='/' className="nav-link">Home</Link>
           <Link to ='/favorites' className="nav-link">Favorites</Link>
+          <form onSubmit={handleSearch} className="search-form">
+            <input 
+            type="text"
+            placeholder="Search for movies..." 
+            className="search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit" className="search-button">Search</button>
+          </form>
           <div className="nav-link genres-dropdown" onClick={() => setGenreBox(!genreBox)}>
             Genres
             {genreBox && (

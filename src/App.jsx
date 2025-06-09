@@ -10,13 +10,14 @@ import React, { useState } from 'react'
 
 function App() {
   const [currentGenre, setCurrentGenre] = useState("all")
+  const [searchQuery, setSearchQuery] = useState(null)
 
   return (
     <MovieProvider>
-      <NavBar onGenreSelect={setCurrentGenre} />
+      <NavBar onGenreSelect={setCurrentGenre} onSearch={(query) => setSearchQuery(query)} />
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Home currentGenre={currentGenre}/>}/>
+          <Route path="/" element={<Home currentGenre={currentGenre} searchQuery={searchQuery}/>}/>
           <Route path="/favorites" element={<Favorites />}/>
           <Route path="/movie/:id" element={<MoviePage />} />
         </Routes>
